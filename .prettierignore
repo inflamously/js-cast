@@ -1,0 +1,4 @@
+**/dist/**
+**/node_modules/**
+**/js-cast-frontend/node_modules/**
+**/js-cast-backend/node_modules/**
