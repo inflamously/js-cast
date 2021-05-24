@@ -1,0 +1,7 @@
+<div class="navbar-item has-dropdown" [ngClass]="{ 'is-hoverable': hover }">
+  <a class="navbar-link"> {{ label }} </a>
+
+  <div [ngClass]="classes">
+    <ng-content select="app-header-item,app-header-divider,app-header-dropdown"></ng-content>
+  </div>
+</div>

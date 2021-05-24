@@ -1,0 +1,20 @@
+<app-header>
+  <app-header-item slot="brand">
+    <div class="app-header-brand pb-1">
+      <img loading="lazy" src="https://dummyimage.com/48x48/000000/ffffff" />
+      <p class="ml-2">@js-cast</p>
+    </div>
+  </app-header-item>
+  <app-header-item [container]="true" slot="start">
+    <app-header-dropdown label="File">
+      <app-header-dropdown label="Local" [container]="false">
+        <app-header-item>Load</app-header-item>
+        <app-header-item>Save</app-header-item>
+      </app-header-dropdown>
+      <app-header-dropdown label="Remote" [container]="false">
+        <app-header-item>Download</app-header-item>
+        <app-header-item>Upload</app-header-item>
+      </app-header-dropdown>
+    </app-header-dropdown>
+  </app-header-item>
+</app-header>

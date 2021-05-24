@@ -1,0 +1,9 @@
+<ng-template #noLink>
+  <div *ngIf="link" [ngClass]="classes">
+    <ng-content></ng-content>
+  </div>
+</ng-template>
+
+<a *ngIf="link; else noLink" [ngClass]="classes" (click)="emitClick($event)">
+  <ng-content></ng-content>
+</a>
