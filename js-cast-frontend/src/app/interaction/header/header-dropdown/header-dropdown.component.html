@@ -2,6 +2,8 @@
   <a class="navbar-link"> {{ label }} </a>
 
   <div [ngClass]="classes">
-    <ng-content select="app-header-item,app-header-divider,app-header-dropdown"></ng-content>
+    <ng-content
+      select="app-header-item,app-header-divider,app-header-dropdown"
+    ></ng-content>
   </div>
 </div>

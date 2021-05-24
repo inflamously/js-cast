@@ -10,7 +10,11 @@ export default {
   component: HeaderComponent,
   decorators: [
     moduleMetadata({
-      declarations: [HeaderDropdownComponent, HeaderItemComponent, HeaderDividerComponent],
+      declarations: [
+        HeaderDropdownComponent,
+        HeaderItemComponent,
+        HeaderDividerComponent,
+      ],
     }),
   ],
 } as Meta;
