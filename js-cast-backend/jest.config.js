@@ -1,11 +1,7 @@
-module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
-  roots: ["."],
-  "testMatch": [
-    "**/?(*.)+(spec|test).+(ts|tsx|js)"
-  ],
-  "transform": {
-    '^.+\\.(ts|tsx)?$': 'ts-jest'
-  },
-};
+/** @type {import('@jest/types').Config.InitialOptions} */
+const configuration = {
+  "preset": 'ts-jest',
+  "testEnvironment": 'node',
+}
+
+module.exports = configuration;
