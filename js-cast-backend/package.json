@@ -1,0 +1,16 @@
+{
+  "name": "js-cast-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jest.config.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "npx jest ./jest.config.js"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "jest": "^27.0.1",
+    "ts-jest": "^26.5.6"
+  }
+}
