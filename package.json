@@ -4,14 +4,15 @@
   "description": "",
   "main": "dist/main.js",
   "scripts": {
+    "start": "electron .",
     "start:build:frontend": "cd js-cast-frontend && npm run build",
     "start:build:backend": "cd js-cast-backend && tsc",
-    "start:build": "npm run start:build:frontend && npm run start:build:backend && npx electron .",
-    "start": "npx electron .",
+    "start:build": "npm run start:build:frontend && npm run start:build:backend && electron .",
+    "build": "npm run start:build:frontend && npm run start:build:backend",
     "backend:test": "cd js-cast-backend && npm run test",
     "frontend:storybook": "cd js-cast-frontend && npm run storybook",
     "frontend:test": "cd js-cast-frontend && npm run test",
-    "format": "npx prettier --write .",
+    "format": "prettier --write .",
     "install": "npm i && cd js-cast-backend && npm i && cd js-cast-frontend && npm i"
   },
   "private": true,
