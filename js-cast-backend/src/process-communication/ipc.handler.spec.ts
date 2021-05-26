@@ -1,15 +1,26 @@
-import { IpcHandler } from "./ipc.handler"
+import { ipcMain } from "electron";
+import { IpcHandler, IpcMethod } from "./ipc.handler"
 
-describe("electron process communication tests", () => {
-    test("should initialize ipc-handler", () => {
-        const handler = new IpcHandler();
-        expect(handler).toBeTruthy()
-        expect(undefined).toBeTruthy()
+describe("process-communication testing", () => {
+    let ipcHandler: IpcHandler;
+    let ipcMethod: IpcMethod = {
+        channelName: "ping-pong",
+        listener: (ev, data) => {
+            ev.reply("Hello World.");
+            console.log(data);
+        }
+    }
+    
+    beforeEach(() => {
+        ipcHandler = new IpcHandler(ipcMain);
     })
-})
+    
+    test("should initialize valid ipc-handler instance", () => {
+        expect(ipcHandler).toBeTruthy()
+    })
 
-test("should initialize ipc-handler", () => {
-    const handler = new IpcHandler();
-    expect(handler).toBeTruthy()
-    expect(undefined).toBeTruthy()
+    test("should register an ipc method", () => {
+        ipcHandler.register(ipcMethod);
+        expect(ipcHandler.methods).toContain(ipcMethod);
+    })
 })
