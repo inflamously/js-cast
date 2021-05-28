@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import { IpcHandler, IpcMethod } from "./ipc.handler"
+import { IpcHandler, IpcMethod } from "./ipc-handler"
 
 describe("process-communication testing", () => {
     let ipcHandler: IpcHandler;
