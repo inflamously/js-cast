@@ -2,24 +2,33 @@
   "name": "js-cast",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "./dist/main.js",
   "scripts": {
     "start": "electron .",
-    "start:build:frontend": "cd js-cast-frontend && npm run build",
-    "start:build:backend": "cd js-cast-backend && tsc",
     "start:build": "npm run start:build:frontend && npm run start:build:backend && electron .",
     "build": "npm run start:build:frontend && npm run start:build:backend",
+    "build:backend": "cd js-cast-backend && tsc",
+    "build:frontend": "cd js-cast-frontend && npm run build",
     "backend:test": "cd js-cast-backend && npm run test",
     "frontend:storybook": "cd js-cast-frontend && npm run storybook",
     "frontend:test": "cd js-cast-frontend && npm run test",
     "format": "prettier --write .",
-    "install": "npm i && cd js-cast-backend && npm i && cd js-cast-frontend && npm i"
+    "install": "npm i && cd js-cast-backend && npm i && cd js-cast-frontend && npm i",
+    "electron:builder:pack": "electron-builder --dir",
+    "electron:builder:dist": "electron-builder"
+  },
+  "build": {
+    "appId": "user.inflamous.js-cast",
+    "files": [
+      "./dist/**/*"
+    ]
   },
   "private": true,
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "electron": "^12.0.9",
+    "electron-builder": "^22.10.5",
     "prettier": "^2.3.0",
     "typescript": "^4.2.4"
   },
