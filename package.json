@@ -5,8 +5,8 @@
   "main": "./dist/main.js",
   "scripts": {
     "start": "electron .",
-    "start:build": "npm run start:build:frontend && npm run start:build:backend && electron .",
-    "build": "npm run start:build:frontend && npm run start:build:backend",
+    "start:build": "npm run build:frontend && npm run build:backend && electron .",
+    "build:all": "npm run build:frontend && npm run build:backend",
     "build:backend": "cd js-cast-backend && tsc",
     "build:frontend": "cd js-cast-frontend && npm run build",
     "backend:test": "cd js-cast-backend && npm run test",
@@ -14,8 +14,8 @@
     "frontend:test": "cd js-cast-frontend && npm run test",
     "format": "prettier --write .",
     "install": "npm i && cd js-cast-backend && npm i && cd js-cast-frontend && npm i",
-    "electron:builder:pack": "electron-builder --dir",
-    "electron:builder:dist": "electron-builder"
+    "package": "electron-builder --dir",
+    "distribute": "electron-builder"
   },
   "build": {
     "appId": "user.inflamous.js-cast",
