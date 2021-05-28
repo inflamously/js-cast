@@ -1,0 +1,10 @@
+{
+    "filesystem": {
+        "paths": [
+            {
+                "key": "filepath:local",
+                "value": "./assets"
+            }
+        ]
+    }
+}
