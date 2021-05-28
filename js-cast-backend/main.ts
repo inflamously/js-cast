@@ -1,12 +1,18 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
 import Pong from "./src/debugging/pong";
+import { ScriptLoader } from "./src/filesystem/script-loader";
 
 export class Main {
   app: Electron.App = app;
   window: BrowserWindow | undefined = undefined;
+  pong: Pong;
+  scriptLoader: ScriptLoader;
 
   constructor() {
+    this.pong = new Pong();
+    this.scriptLoader = new ScriptLoader();
+
     this.initializeWhenReady();
     this.showOnActivate();
     this.quitOnDestruction();
@@ -42,7 +48,7 @@ export class Main {
         devTools: true,
         nodeIntegration: false,
         contextIsolation: true,
-        enableRemoteModule: false,
+        enableRemoteModule: true,
         preload: path.join(__dirname, "preload.js"),
       },
     });
@@ -54,5 +60,5 @@ export class Main {
   }
 }
 
-const pong = new Pong();
+/* Initialization */
 const main = new Main();
