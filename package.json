@@ -21,6 +21,13 @@
     "appId": "user.inflamous.js-cast",
     "files": [
       "./dist/**/*"
+    ],
+    "extraFiles": [
+      {
+        "from": "./js-cast-backend/assets/app-config.file.json",
+        "to": "./assets/app-config.file.json",
+        "filter": ["**/*"]
+      }
     ]
   },
   "private": true,

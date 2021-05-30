@@ -5,9 +5,10 @@ import { IpcHandler } from "../process-communication/ipc-handler";
 export class LocalScriptLoader {
 
     ipcHandler: IpcHandler;
-    config: AppConfig = new AppConfig();
 
-    constructor() {
+    constructor(
+        private config: AppConfig
+    ) {
         this.ipcHandler = new IpcHandler(ipcMain);
     }
 
