@@ -1,5 +1,5 @@
 import { ipcMain } from "electron";
-import { AppConfig } from "../configuration/app-config";
+import { DefaultAppConfig } from "../configuration/app-config";
 import { IpcHandler } from "../process-communication/ipc-handler";
 
 export class LocalScriptLoader {
@@ -7,7 +7,7 @@ export class LocalScriptLoader {
     ipcHandler: IpcHandler;
 
     constructor(
-        private config: AppConfig
+        private config: DefaultAppConfig
     ) {
         this.ipcHandler = new IpcHandler(ipcMain);
     }
