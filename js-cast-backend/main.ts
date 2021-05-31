@@ -1,21 +1,25 @@
 import { app, BrowserWindow } from "electron";
 import { copyFile } from 'fs'
 import * as path from "path";
-import { AppConfig } from "./src/configuration/app-config";
+import { AppConfig, DefaultAppConfig } from "./src/configuration/app-config";
 import Pong from "./src/debugging/pong";
-import { ScriptLoader } from "./src/filesystem/script-loader";
+import { DefaultScriptLoader, ScriptLoader } from "./src/scripting/script-loader";
+import { DefaultElectronAppWindow, ElectronAppWindow } from "./src/interactive-browser-window/electron-app-window";
 
-export class Main {
+export class Main implements 
+    AppConfig<DefaultAppConfig>, 
+    ScriptLoader<DefaultScriptLoader>, 
+    ElectronAppWindow<DefaultElectronAppWindow> {
   app: Electron.App = app;
-  window: BrowserWindow | undefined = undefined;
+  appWindow: DefaultElectronAppWindow | undefined;
   pong: Pong;
-  scriptLoader: ScriptLoader;
-  config: AppConfig | undefined;
+  scriptLoader: DefaultScriptLoader | undefined;
+  config: DefaultAppConfig | undefined;
 
   constructor() {
     this.pong = new Pong();
-    this.setupAppConfig().then((config) => this.config = config);
-    this.scriptLoader = this.setupScriptLoader();
+    this.setupConfig();
+    this.setupScriptLoader();
 
     this.initializeWhenReady();
     this.showOnActivate();
@@ -24,14 +28,14 @@ export class Main {
 
   initializeWhenReady() {
     this.app.whenReady().then(() => {
-      this.window = this.createWindow();
+      this.setupWindow();
     });
   }
 
   showOnActivate() {
     this.app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) {
-        this.window = this.createWindow();
+        this.setupWindow();
       }
     });
   }
@@ -44,37 +48,26 @@ export class Main {
     });
   }
 
-  createWindow(): BrowserWindow {
-    const window = new BrowserWindow({
-      width: 800,
-      height: 600,
-      webPreferences: {
-        devTools: true,
-        nodeIntegration: false,
-        contextIsolation: true,
-        enableRemoteModule: true,
-        preload: path.join(__dirname, "preload.js"),
-      },
-    });
-
-    window.webContents.openDevTools();
-    window.loadFile(__dirname + "/index.html");
-
-    return window;
+  workDirectory(): string {
+    return __dirname
   }
 
-  setupScriptLoader(): ScriptLoader {
-    return new ScriptLoader(this.config as AppConfig);
+  setupWindow(): void {
+    this.appWindow = new DefaultElectronAppWindow(this.workDirectory());
   }
 
-  async setupAppConfig(): Promise<AppConfig> {
+  setupScriptLoader(): DefaultScriptLoader {
+    return new DefaultScriptLoader(this.config as DefaultAppConfig);
+  }
+
+  async setupConfig(): Promise<void> {
     const userDataPath = this.app.getPath("userData");
     const localConfigFile = path.join(".", "assets", "app-config.file.json");
-    // TODO: move into appConfig as static method.
+
     await copyFile(localConfigFile, path.join(userDataPath, "app-config.file.json"), () => {})
 
-    return await new Promise((resolve, reject) => {
-      resolve(new AppConfig(userDataPath))
+    this.config = await new Promise((resolve, reject) => {
+      resolve(new DefaultAppConfig(userDataPath))
       reject(undefined)
     });
   }

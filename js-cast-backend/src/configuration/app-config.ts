@@ -1,8 +1,13 @@
 import { ConfigRoot } from "./types/config-root"
 import { join } from "path"
-import { copyFile } from "fs-extra"
 
-export class AppConfig {
+export interface AppConfig<T> {
+    config: T | undefined
+
+    setupConfig(): Promise<void>;
+};
+
+export class DefaultAppConfig {
     
     private configurations: Map<string, any>;
 
@@ -30,5 +35,3 @@ export class AppConfig {
         return this.config("root");
     }
 }
-
-module.exports = { AppConfig }
