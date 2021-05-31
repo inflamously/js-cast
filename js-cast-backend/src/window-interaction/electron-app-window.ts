@@ -32,7 +32,7 @@ export class DefaultElectronAppWindow {
 
     
 
-    get window(): BrowserWindow | undefined {
+    get browserWindow(): BrowserWindow | undefined {
         return this._window
     }
 }
