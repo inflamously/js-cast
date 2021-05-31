@@ -1,49 +1,43 @@
-import { app, BrowserWindow } from "electron";
+import { app, dialog } from "electron";
 import { copyFile } from 'fs'
 import * as path from "path";
 import { AppConfig, DefaultAppConfig } from "./src/configuration/app-config";
 import Pong from "./src/debugging/pong";
 import { DefaultScriptLoader, ScriptLoader } from "./src/scripting/script-loader";
-import { DefaultElectronAppWindow, ElectronAppWindow } from "./src/interactive-browser-window/electron-app-window";
+import { DefaultElectronAppWindow, ElectronAppWindow } from "./src/window-interaction/electron-app-window";
+import { PromiseCatch } from "./src/error-handling/catcher";
+import { DefaultElectronAppEventHandler, ElectronAppEventHandler } from "./src/window-interaction/electron-app-events";
 
 export class Main implements 
     AppConfig<DefaultAppConfig>, 
     ScriptLoader<DefaultScriptLoader>, 
-    ElectronAppWindow<DefaultElectronAppWindow> {
+    ElectronAppWindow<DefaultElectronAppWindow>,
+    ElectronAppEventHandler<DefaultElectronAppEventHandler>,
+    PromiseCatch {
   app: Electron.App = app;
   appWindow: DefaultElectronAppWindow | undefined;
+  appEventHandler: DefaultElectronAppEventHandler | undefined;
   pong: Pong;
   scriptLoader: DefaultScriptLoader | undefined;
   config: DefaultAppConfig | undefined;
 
   constructor() {
     this.pong = new Pong();
-    this.setupConfig();
+    this.setupEventHandler();
     this.setupScriptLoader();
+    this.catch(this.setupConfig());
 
-    this.initializeWhenReady();
-    this.showOnActivate();
-    this.quitOnDestruction();
+    this.appEventHandler?.listeners.READY.push(() => { console.log("APP READY") });
   }
 
-  initializeWhenReady() {
-    this.app.whenReady().then(() => {
-      this.setupWindow();
-    });
-  }
-
-  showOnActivate() {
-    this.app.on("activate", () => {
-      if (BrowserWindow.getAllWindows().length === 0) {
-        this.setupWindow();
-      }
-    });
-  }
-
-  quitOnDestruction() {
-    this.app.on("window-all-closed", () => {
-      if (process.platform !== "darwin") {
-        app.quit();
+  catch(promise: Promise<any>): void {
+    promise.catch((_) => { 
+      const window = this.appWindow?.browserWindow
+      if (window) {
+        dialog.showMessageBox(window, {
+          title: "Main",
+          message: "Application failed to instantiate properly."
+        }) 
       }
     });
   }
@@ -56,8 +50,15 @@ export class Main implements
     this.appWindow = new DefaultElectronAppWindow(this.workDirectory());
   }
 
-  setupScriptLoader(): DefaultScriptLoader {
-    return new DefaultScriptLoader(this.config as DefaultAppConfig);
+  setupScriptLoader(): void {
+    this.scriptLoader = new DefaultScriptLoader(this.config as DefaultAppConfig);
+  }
+
+  setupEventHandler(): void {
+    this.appEventHandler = new DefaultElectronAppEventHandler(
+      this.app,
+      this
+    )
   }
 
   async setupConfig(): Promise<void> {
